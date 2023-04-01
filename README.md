@@ -1,2 +1,2 @@
 # iOS-Practice
-Daily practice of fundamental and new technology
+ Practice of fundamental
