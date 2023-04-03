@@ -46,7 +46,7 @@ struct Rechability {
     static let networkAvailable = false
 }
 
-/// This class composes the 2 concrete types 
+/// This class composes the 2 concrete types
 class RemoteWithLocalFallbackFeedLoader: FeedLoader {
     // both concrete dependencies
     var remote: RemoteFeedLoader!
@@ -59,14 +59,17 @@ class RemoteWithLocalFallbackFeedLoader: FeedLoader {
     }
     
     func loadFeed(completion: @escaping ([String]) -> Void) {
-        if Rechability.networkAvailable {
-            remote.loadFeed { loadedItems in
-                // do something
-            }
-        } else {
-            local.loadFeed { loadedItems in
-                // do something
-            }
-        }
+        
+        let load = Rechability.networkAvailable ? remote.loadFeed : local.loadFeed
+        load(completion)
     }
 }
+
+// using the objects
+let vc = FeedViewController(loader: RemoteFeedLoader())
+let vc2 = FeedViewController(loader: LocalFeedLoader())
+// initialiser injection
+let vc3 = FeedViewController(loader:
+                                RemoteWithLocalFallbackFeedLoader(remote:
+                                                                    RemoteFeedLoader(), local:
+                                                                    LocalFeedLoader()))
