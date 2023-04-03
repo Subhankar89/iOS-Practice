@@ -7,22 +7,37 @@
 
 import UIKit
 
-// this could be a protocol as well
-typealias FeedLoader = (([String]) -> Void) -> Void
+protocol FeedLoader {
+    func loadFeed(completion: @escaping ([String]) -> Void)
+}
 class FeedViewController: UIViewController {
-    var loadFeed: FeedLoader!
+    var loader: FeedLoader!
     
-    convenience init(loadFeed: @escaping FeedLoader) {
+    convenience init(loader: FeedLoader) {
         self.init()
-        self.loadFeed = loadFeed
+        self.loader = loader
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // invoke the loadFeed closure and expect to get some items
-        loadFeed { loadedItems in
-            //update UI
+        loader.loadFeed { loadedItems in
+            // update UI
+            print(loadedItems)
         }
+    }
+}
+
+class RemoteFeedLoader: FeedLoader {
+    func loadFeed(completion: @escaping ([String]) -> Void) {
+        // do something
+        completion(["result1, result2"])
+    }
+}
+
+class LocalFeedLoader: FeedLoader {
+    func loadFeed(completion: @escaping ([String]) -> Void) {
+        // do something
+        completion(["result3, result4"])
     }
 }
