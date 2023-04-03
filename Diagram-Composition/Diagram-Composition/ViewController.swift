@@ -10,20 +10,33 @@ import UIKit
 protocol FeedLoader {
     func loadFeed(completion: @escaping ([String]) -> Void)
 }
+
+struct Rechability {
+    static let networkAvailable = false
+}
+
 class FeedViewController: UIViewController {
-    var loader: FeedLoader!
+    // both concrete dependencies
+    var remote: RemoteFeedLoader!
+    var local: LocalFeedLoader!
     
-    convenience init(loader: FeedLoader) {
+    convenience init(remote: RemoteFeedLoader, local: LocalFeedLoader) {
         self.init()
-        self.loader = loader
+        self.remote = remote
+        self.local = local
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loader.loadFeed { loadedItems in
-            // update UI
-            print(loadedItems)
+        if Rechability.networkAvailable {
+            remote.loadFeed { loadedItems in
+                // do something
+            }
+        } else {
+            local.loadFeed { loadedItems in
+                // do something
+            }
         }
     }
 }
