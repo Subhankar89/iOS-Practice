@@ -68,8 +68,8 @@ class RemoteWithLocalFallbackFeedLoader: FeedLoader {
 // using the objects
 let vc = FeedViewController(loader: RemoteFeedLoader())
 let vc2 = FeedViewController(loader: LocalFeedLoader())
-// initialiser injection
-let vc3 = FeedViewController(loader:
-                                RemoteWithLocalFallbackFeedLoader(remote:
-                                                                    RemoteFeedLoader(), local:
-                                                                    LocalFeedLoader()))
+// property injection
+let vc3 = FeedViewController()
+vc3.loader = RemoteWithLocalFallbackFeedLoader(remote:
+                                    RemoteFeedLoader(), local:
+                                    LocalFeedLoader())
